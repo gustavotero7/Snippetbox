@@ -30,7 +30,7 @@ func (db *Database) GetSnippet(id int) (*Snippet, error) {
 
 // LatestSnippets _
 func (db *Database) LatestSnippets() (Snippets, error) {
-	stmnt := `SELECT id, title, content, created, expires WHERE expires > UTC_TIMESTAMP() ORDER BY created DESC LIMIT = 10`
+	stmnt := `SELECT id, title, content, created, expires FROM snippets WHERE expires > UTC_TIMESTAMP() ORDER BY created DESC LIMIT 10`
 	rows, err := db.Query(stmnt)
 
 	if err != nil {

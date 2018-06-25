@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -12,7 +11,13 @@ func (a *App) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	a.RenderHTML(w, "home.page.html")
+	snippets, err := a.Database.LatestSnippets()
+	if err != nil {
+		a.ServerError(w, err)
+		return
+	}
+
+	a.RenderHTML(w, "home.page.html", &HTMLData{Snippets: snippets})
 }
 
 func (a *App) showSnippet(w http.ResponseWriter, r *http.Request) {
@@ -31,10 +36,7 @@ func (a *App) showSnippet(w http.ResponseWriter, r *http.Request) {
 	if snippet == nil {
 		a.NotFound(w)
 	}
-
-	fmt.Fprint(w, snippet)
-
-	//w.Write([]byte("Show snippet here"))
+	a.RenderHTML(w, "show.page.html", &HTMLData{Snippet: snippet})
 }
 
 func (a *App) newSnippet(w http.ResponseWriter, r *http.Request) {

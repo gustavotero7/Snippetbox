@@ -2,10 +2,25 @@
 
 {{define "page-body"}}
 <h2>Latest snippets</h2>
-<p>there is nothing to see here yet</p>
+    {{- if .Snippets -}}
+    <table>
+    <tr>
+        <th>Title</th>
+        <th>Created</th>
+        <th>ID</th>
+    </tr>
+    {{range .Snippets}}
+    <tr>
+        <td><a href="snippet?id={{.ID}}">{{.Title}}</a></td>
+        <td>{{.Created}}</td>
+        <td>{{.ID}}</td>
+    </tr>
+    {{end}}
+</table>    
+    {{- else -}}
+    <p>There is nothig to see yet</p>
+    {{- end -}}
+
 {{end}}
 
-{{define "page-foot"}}
-<h2>I'm a footer</h2>
-{{end}}
 
